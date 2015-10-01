@@ -1,6 +1,7 @@
 #encoding: utf-8
 import os
 import csv
+import operator
 from collections import OrderedDict
 from codecs import open
 
@@ -18,10 +19,16 @@ def read_files():
     file_list = get_log_files_list(my_dir)
     file_list = file_list
     matrix = []
+
+    directors = {}
+    actors = {}
+
     print len(file_list)
     for i, f in enumerate(file_list):
         file_id = f[:-5]
         file_path = my_dir + f
+        directors_copy = directors
+        actors_list = []
 
         with open(file_path, 'rb', "utf-8") as f:
             # Get file lines beginning from start_line
@@ -48,11 +55,14 @@ def read_files():
                 if '<h4 class="inline">Director:</h4>' in row:
                     desired_row = f_list[index+2]
                     movie_director = desired_row[len(director_trash):desired_row.index(director_trash_2)]
+
                 if '<h4 class="inline">Stars:</h4>' in row:
                     for i in range(2, 7, 2):
                         star = f_list[index+i]
                         if director_trash[15:] in star:
-                            movie_stars += star[len(director_trash):star.index(director_trash_2)]
+                            star = star[len(director_trash):star.index(director_trash_2)]
+                            movie_stars += star
+                            actors_list.append(star)
                             movie_stars += ', '
                 if '<p itemprop="description">' in row:
                     desired_row = f_list[index+1]
@@ -81,6 +91,21 @@ def read_files():
             my_dict['genre'] = movie_genre
             matrix.append(my_dict)
 
+            if movie_director not in directors:
+                directors[movie_director] = 1
+            else:
+                directors[movie_director] += 1
+
+            for actor in actors_list:
+                if actor not in actors:
+                    actors[actor] = 1
+                else:
+                    actors[actor] += 1
+
+    # print sorted(directors.items(), key=operator.itemgetter(1))
+    # print '---------------------------------------------------------------------------------------------------------------------------------------------------------'
+    # print sorted(actors.items(), key=operator.itemgetter(1))
+
     return matrix
 
 my_matrix = read_files()
@@ -107,7 +132,9 @@ for item in my_matrix:
         ET.SubElement(content, "rating").text = str(item['rating'])
         ET.SubElement(content, "genre").text = item['genre']
         tree = ET.ElementTree(document)
-        file_name = "corpus/{0}.xml".format(item['title'])
+        file_name = "corpus_title/{0}.xml".format(item['title'])
+        tree.write(file_name, encoding="UTF-8", xml_declaration=True)
+        file_name = "corpus_id/{0}.xml".format(item['id'])
         tree.write(file_name, encoding="UTF-8", xml_declaration=True)
     except:
         pass

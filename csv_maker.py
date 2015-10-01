@@ -14,10 +14,10 @@ def get_log_files_list(files_dir):
 
 
 
-my_dir = 'corpus/'
+my_dir = 'corpus_id/'
 file_list = get_log_files_list(my_dir)
 
-matrix = []
+movies = []
 
 q3_counter = 0
 q2_counter = 0
@@ -27,7 +27,6 @@ for f in file_list:
 	c1 = 0
 	c2 = 0
 	c3 = 0
-	choc = 0
 	file_path = my_dir + f
 
 	with open(file_path, 'rb', 'utf-8') as opened_file:
@@ -49,13 +48,13 @@ for f in file_list:
 	my_dict['Bolo de chocolate'] = c2
 	my_dict['Serve 8 porcoes'] = c3
 
-	matrix.append(my_dict)
+	movies.append(my_dict)
 
 
 with open('relation_matrix.csv', 'wb') as f:  # Just use 'w' mode in 3.x
-    w = csv.DictWriter(f, matrix[0].keys())
+    w = csv.DictWriter(f, movies[0].keys())
     w.writeheader()
-    for m in matrix:
+    for m in movies:
         w.writerow(m)
 
 print 'total q1 %d' % q1_counter
