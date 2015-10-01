@@ -33,13 +33,13 @@ for f in file_list:
 		read_file = opened_file.read()
 		read_file = read_file.lower()
 
-		if 'ovo' in read_file and 'manteiga' in read_file and 'leite' in read_file:
+		if (' bolo' in read_file or 'bolo ' in read_file) and not ('leite' in read_file):
 			c1 = 1
 			q1_counter += 1
 		if (' bolo' in read_file or 'bolo ' in read_file) and 'chocolate' in read_file:
 			q2_counter += 1
 			c2 = 1
-		if ">4 portions" in read_file or ">5 portions" in read_file:
+		if ">8 portions" in read_file:
 			q3_counter += 1
 			c3 = 1
 
@@ -47,7 +47,7 @@ for f in file_list:
 	my_dict['Titulo'] = f
 	my_dict['Contem ovo, manteiga e leite'] = c1
 	my_dict['Bolo de chocolate'] = c2
-	my_dict['Serve 5 porcoes'] = c3
+	my_dict['Serve 8 porcoes'] = c3
 
 	matrix.append(my_dict)
 
