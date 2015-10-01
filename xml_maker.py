@@ -20,21 +20,15 @@ def read_files():
     matrix = []
     print len(file_list)
     for i, f in enumerate(file_list):
-        file_id = i
-        title = ''
-        time = ''
-        quantity = ''
-        votes = ''
+        file_id = f[:-5]
         file_path = my_dir + f
-
-        content = ''
 
         with open(file_path, 'rb', "utf-8") as f:
             # Get file lines beginning from start_line
             # file_rows = list(csv.reader(f))[start_line:]
             f_list = list(f)
-            trash_title = '<h1 class="header"> <span class="itemprop" itemprop="name">'
-            trash_title2 = '</span>'
+            trash_title = '    <meta property="og:title" content="'
+            trash_title2 = '" />'
             movie_title = ''
             director_trash = 'itemprop="url"><span class="itemprop" itemprop="name">'
             director_trash_2 = '</span>'
@@ -45,8 +39,12 @@ def read_files():
             movie_genre = ''
 
             for index, row in enumerate(f_list):
-                if 'class="header' in row:
+                if "<meta property='og:title' content=" in row:
                     movie_title = row[len(trash_title):row.index(trash_title2)]
+                    try:
+                        movie_title = movie_title.replace("&quot;", "")
+                    except:
+                        pass
                 if '<h4 class="inline">Director:</h4>' in row:
                     desired_row = f_list[index+2]
                     movie_director = desired_row[len(director_trash):desired_row.index(director_trash_2)]
