@@ -95,15 +95,19 @@ import xml.etree.cElementTree as ET
 
 for item in my_matrix:
 
-    document = ET.Element("doc", docname=str(item["id"]))
-    content = ET.SubElement(document, "content")
-    ET.SubElement(content, "id").text = str(item['id'])
-    ET.SubElement(content, "title").text = item['title']
-    ET.SubElement(content, "director").text = item['director']
-    ET.SubElement(content, "stars").text = item['stars']
-    ET.SubElement(content, "description").text = item['description']
-    ET.SubElement(content, "rating").text = str(item['rating'])
-    ET.SubElement(content, "genre").text = item['genre']
-    tree = ET.ElementTree(document)
-    file_name = "corpus/{0}.xml".format(item['id'])
-    tree.write(file_name, encoding="UTF-8", xml_declaration=True)
+    try:
+
+        document = ET.Element("doc", docname=str(item["id"]))
+        content = ET.SubElement(document, "content")
+        ET.SubElement(content, "id").text = str(item['id'])
+        ET.SubElement(content, "title").text = item['title']
+        ET.SubElement(content, "director").text = item['director']
+        ET.SubElement(content, "stars").text = item['stars']
+        ET.SubElement(content, "description").text = item['description']
+        ET.SubElement(content, "rating").text = str(item['rating'])
+        ET.SubElement(content, "genre").text = item['genre']
+        tree = ET.ElementTree(document)
+        file_name = "corpus/{0}.xml".format(item['title'])
+        tree.write(file_name, encoding="UTF-8", xml_declaration=True)
+    except:
+        pass
