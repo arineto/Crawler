@@ -27,25 +27,25 @@ for f in file_list:
 	c1 = 0
 	c2 = 0
 	c3 = 0
+	choc = 0
 	file_path = my_dir + f
 
 	with open(file_path, 'rb', 'utf-8') as opened_file:
 		read_file = opened_file.read()
 		read_file = read_file.lower()
 
-		if (' bolo' in read_file or 'bolo ' in read_file) and not ('leite' in read_file):
+		if 'bolo' in read_file and not ('leite' in read_file):
 			c1 = 1
 			q1_counter += 1
-		if (' bolo' in read_file or 'bolo ' in read_file) and 'chocolate' in read_file:
+		if 'bolo' in read_file and 'chocolate' in read_file:
 			q2_counter += 1
 			c2 = 1
 		if ">8 portions" in read_file:
 			q3_counter += 1
 			c3 = 1
-
 	my_dict = OrderedDict()
 	my_dict['Titulo'] = f
-	my_dict['Contem ovo, manteiga e leite'] = c1
+	my_dict['Bolo sem leite'] = c1
 	my_dict['Bolo de chocolate'] = c2
 	my_dict['Serve 8 porcoes'] = c3
 
